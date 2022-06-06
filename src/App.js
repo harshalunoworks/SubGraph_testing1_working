@@ -1,23 +1,37 @@
-import logo from './logo.svg';
 import './App.css';
+import {createClient} from 'urql';
+import {useEffect} from 'react';
 
+const api_url = 'https://api.thegraph.com/subgraphs/name/yugg007/ladyytesst';
+const  query = `
+{
+  ladies(first: 3) {
+    id
+    tokenID
+  	name
+    tokenURI
+    faceExpression
+    hairStyle
+  	}
+}
+`
+
+const client = createClient({
+  url : api_url
+})
+
+ 
 function App() {
+  async function fetchData(){
+    const response = await client.query(query).toPromise();
+    console.log('response', response.data);
+  }
+  useEffect(() => {
+    fetchData()
+  },[])
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>hello from react app</h1>
     </div>
   );
 }
